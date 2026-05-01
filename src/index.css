@@ -3,3 +3,7 @@
 body {
 	@apply h-screen w-screen flex flex-col items-stretch bg-linear-to-br from-zinc-800 from-20% to-black text-zinc-50;
 }
+
+button {
+	@apply hover:cursor-pointer hover:opacity-90;
+}
