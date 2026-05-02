@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { TodoListType } from "./lib";
 import TodoList from "./components/TodoList";
+import { PopupKind, useAppState } from "./lib/stores";
 
 export default function App() {
   const [todoLists, setTodoLists] = useState<TodoListType[]>([
@@ -28,7 +29,7 @@ export default function App() {
 
   return (
     <>
-      <header className="w-screen h-16 flex items-center justify-center bg-black">
+      <header className="w-screen h-16 flex items-center justify-center bg-transparent text-stone-100">
         <a
           href="https://github.com/nerddude9000/todo-or-not-todo"
           target="_blank"

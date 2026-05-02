@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { TodoListType } from "../lib";
+import type { TodoListType } from "../lib/types";
 import TodoItem from "./TodoItem";
 
 interface Props {
@@ -13,13 +13,14 @@ export default function TodoList({ list, className }: Props) {
   return (
     <div
       className={clsx(
-        "w-sm min-h-96 overflow-y-auto flex flex-col items-stretch gap-2 rounded-lg bg-zinc-100 text-zinc-900 group",
+        "w-sm min-h-96 overflow-y-auto flex flex-col items-stretch gap-2 rounded-xl bg-stone-900 text-zinc-100 group",
         className,
       )}
     >
-      <h2 className="bg-slate-100 p-4 rounded-t-lg text-4xl font-bold group-hover:bg-white transition-colors duration-500">
-        {title}
-      </h2>
+      <input
+        className="clear-input text-stone-400 p-4 rounded-t-lg text-4xl font-bold group-hover:text-stone-50 transition-colors duration-300"
+        defaultValue={title}
+      />
       <div className="flex flex-col items-stretch gap-8 p-3">
         {items.map((item) => (
           <TodoItem key={`todo_item_${item.name}`} item={item} />

@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
 body {
-	@apply h-screen w-screen flex flex-col items-stretch bg-linear-to-br from-zinc-800 from-20% to-black text-zinc-50;
+	@apply h-screen w-screen flex flex-col items-stretch bg-stone-950;
 }
 
 button {
 	@apply hover:cursor-pointer hover:opacity-90;
+}
+
+.clear-input {
+	@apply bg-transparent text-center focus:outline-none focus:border-orange-400 focus:border-b;
 }
