@@ -27,6 +27,8 @@ export default function App() {
 
   // @TODO: add api integration
 
+  const onAddList = () => {};
+
   return (
     <>
       <header className="w-screen h-16 flex items-center justify-center bg-transparent text-stone-100">
@@ -42,6 +44,12 @@ export default function App() {
         {todoLists.map((list) => (
           <TodoList key={`todo_${list.title}`} list={list} />
         ))}
+        <button
+          className="bg-orange-800 text-stone-200 w-sm min-h-24 text-xl font-semibold self-start rounded-2xl"
+          onClick={onAddList}
+        >
+          Create a new list
+        </button>
       </main>
     </>
   );
