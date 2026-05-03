@@ -117,12 +117,6 @@ function handleTasks(string $method, PDO $pdo, ?array $input)
 			break;
 
 		case 'POST': // Create new task
-			if (!isset($input['name']) || trim($input['name']) === '') {
-				http_response_code(400);
-				echo json_encode(["error" => "Task name is required"]);
-				exit();
-			}
-
 			if (!isset($input['list_id'])) {
 				http_response_code(400);
 				echo json_encode(["error" => "list_id is required"]);
@@ -130,7 +124,7 @@ function handleTasks(string $method, PDO $pdo, ?array $input)
 			}
 
 			$stmt = $pdo->prepare("INSERT INTO tasks (name, done, list_id) VALUES (:name, 0, :list_id)");
-			$stmt->execute(['name' => trim($input['name']), 'list_id' => $input['list_id']]);
+			$stmt->execute(['name' => $input['name'] ? trim($input['name']) : "New Task", 'list_id' => $input['list_id']]);
 
 			// Return the newly created task
 			$newTask = [
