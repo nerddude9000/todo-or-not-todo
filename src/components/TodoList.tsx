@@ -53,7 +53,7 @@ export default function TodoList({ list, className }: Props) {
   return (
     <div
       className={clsx(
-        "relative w-sm min-h-96 overflow-y-auto flex flex-col items-stretch gap-2 rounded-2xl bg-stone-900 text-zinc-100 group",
+        "relative w-sm overflow-y-auto flex flex-col items-stretch gap-2 rounded-2xl bg-stone-900 text-zinc-100 group",
         className,
       )}
     >
@@ -65,12 +65,12 @@ export default function TodoList({ list, className }: Props) {
       </button>
 
       <input
-        className="clear-input text-stone-400 p-4 rounded-t-lg text-4xl font-bold group-hover:text-stone-50 transition-colors duration-300"
+        className="clear-input text-stone-400 p-4 rounded-t-lg text-4xl font-bold group-hover:text-stone-50"
         value={title}
         onChange={(e) => onTitleChange(e.target.value)}
       />
 
-      <div className="flex flex-col items-stretch gap-4 px-4 py-10">
+      <div className="flex flex-col items-stretch gap-4 p-4">
         {query.data?.map((item) => (
           <TodoItem key={`todo_item_${item.id}`} item={item} />
         ))}

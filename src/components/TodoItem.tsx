@@ -61,7 +61,7 @@ export default function TodoItem({ item }: Props) {
       <div className="flex items-center justify-between *:text-stone-500 text-sm *:flex *:items-center *:gap-1.5">
         {/* @TODO: Add dates */}
         <p>
-          <CalendarPlusIcon />
+          <CalendarPlusIcon /> {item.date_added.split(" ")[0]}
         </p>
         <input
           type="checkbox"
@@ -69,9 +69,6 @@ export default function TodoItem({ item }: Props) {
           checked={item.done}
           onChange={(e) => onCheckedChange(e.target.checked)}
         />
-        <p>
-          <CalendarCheckIcon />
-        </p>
       </div>
     </div>
   );

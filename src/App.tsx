@@ -27,7 +27,7 @@ export default function App() {
           To do, or not to do...
         </a>
       </header>
-      <main className="p-8 flex-1 flex items-stretch gap-16 max-w-none">
+      <main className="p-8 flex-1 flex *:min-w-96 items-start gap-16 max-w-none min-h-svh overflow-x-scroll">
         {query.data?.map((list) => (
           <TodoList key={`todo_${list.id}`} list={list} />
         ))}
@@ -38,6 +38,17 @@ export default function App() {
           Create a new list
         </button>
       </main>
+      <footer className="w-screen flex items-center justify-center min-h-8 text-slate-100 text-sm">
+        Made by{" "}
+        <a
+          href="https://github.com/nerddude9000"
+          className="text-white underline mx-1"
+          target="_blank"
+        >
+          Mohammed Akram
+        </a>
+        .
+      </footer>
     </QueryClientProvider>
   );
 }

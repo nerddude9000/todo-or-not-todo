@@ -9,5 +9,5 @@ button {
 }
 
 .clear-input {
-	@apply bg-transparent text-center focus:outline-none focus:border-orange-400 focus:border-b;
+	@apply bg-transparent text-center focus:outline-none focus:border-orange-400 focus:border-b transition-colors duration-300;
 }

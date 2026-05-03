@@ -3,6 +3,7 @@ export type TodoItemType = {
   name: string;
   done: boolean;
   list_id: number;
+  date_added: string;
 };
 
 export type TodoListType = {
