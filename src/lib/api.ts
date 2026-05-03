@@ -78,3 +78,35 @@ export async function postTodoTask({
 
   if (!res.ok) alert(`${res.status}: ${res.statusText}`);
 }
+
+export async function putTodoTask({
+  id,
+  name,
+  done,
+}: {
+  id: number;
+  name?: string;
+  done?: boolean;
+}): Promise<void> {
+  const res = await fetch("http://localhost:8000/api.php?resource=tasks", {
+    method: "PUT",
+    body: JSON.stringify({
+      id,
+      name,
+      done,
+    }),
+  });
+
+  if (!res.ok) alert(`${res.status}: ${res.statusText}`);
+}
+
+export async function deleteTodoTask({ id }: { id: number }): Promise<void> {
+  const res = await fetch("http://localhost:8000/api.php?resource=tasks", {
+    method: "DELETE",
+    body: JSON.stringify({
+      id,
+    }),
+  });
+
+  if (!res.ok) alert(`${res.status}: ${res.statusText}`);
+}
