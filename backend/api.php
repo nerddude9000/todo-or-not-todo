@@ -13,8 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 try {
-	// connect to db
+	// connect to db and configure
 	$pdo = new PDO('sqlite:' . __DIR__ . '/tasks.db');
+	$pdo->exec('PRAGMA foreign_keys = ON;');
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
 	http_response_code(500);
