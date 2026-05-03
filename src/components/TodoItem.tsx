@@ -1,14 +1,17 @@
 import clsx from "clsx";
 import type { TodoItemType } from "../lib/types";
-import { CalendarCheckIcon, CalendarPlusIcon, TrashIcon } from "lucide-react";
+import { CalendarPlusIcon, TrashIcon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTodoTask, putTodoTask } from "../lib/api";
+import { useState } from "react";
 
 interface Props {
   item: TodoItemType;
 }
 
 export default function TodoItem({ item }: Props) {
+  const [name, setName] = useState(item.name);
+
   const queryClient = useQueryClient();
 
   const mutationUpdate = useMutation({
@@ -23,8 +26,8 @@ export default function TodoItem({ item }: Props) {
       queryClient.invalidateQueries({ queryKey: ["tasks", item.list_id] }),
   });
 
-  const onNameChange = (newName: string) => {
-    mutationUpdate.mutate({ id: item.id, name: newName });
+  const onNameChange = () => {
+    mutationUpdate.mutate({ id: item.id, name });
   };
 
   const onCheckedChange = (isChecked: boolean) => {
@@ -54,14 +57,16 @@ export default function TodoItem({ item }: Props) {
           "clear-input text-xl font-semibold",
           item.done && "line-through",
         )}
-        value={item.name}
-        onChange={(e) => onNameChange(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onBlur={onNameChange}
       />
 
-      <div className="flex items-center justify-between *:text-stone-500 text-sm *:flex *:items-center *:gap-1.5">
+      <div className="flex items-center justify-between">
         {/* @TODO: Add dates */}
-        <p>
-          <CalendarPlusIcon /> {item.date_added.split(" ")[0]}
+        <p className="flex items-center gap-1.5 text-stone-500 text-sm">
+          <CalendarPlusIcon />
+          {item.date_added}
         </p>
         <input
           type="checkbox"

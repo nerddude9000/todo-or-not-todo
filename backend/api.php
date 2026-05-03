@@ -99,7 +99,7 @@ function handleTasks(string $method, PDO $pdo, ?array $input)
 				exit();
 			}
 
-			$stmt = $pdo->prepare("SELECT * FROM tasks WHERE list_id = :list_id ORDER BY id DESC");
+			$stmt = $pdo->prepare("SELECT * FROM tasks WHERE list_id = :list_id ORDER BY id ASC");
 			$stmt->execute(['list_id' => $_GET['list_id']]);
 			$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

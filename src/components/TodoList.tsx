@@ -27,7 +27,6 @@ export default function TodoList({ list, className }: Props) {
 
   const mutationUpdate = useMutation({
     mutationFn: putTodoList,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["lists"] }),
   });
 
   const mutationDelete = useMutation({
@@ -41,15 +40,6 @@ export default function TodoList({ list, className }: Props) {
       queryClient.invalidateQueries({ queryKey: ["tasks", list.id] }),
   });
 
-  const onTitleChange = (newTitle: string) => {
-    mutationUpdate.mutate({ id: list.id, newTitle });
-    setTitle(newTitle);
-  };
-
-  const onDelete = () => {
-    mutationDelete.mutate({ id: list.id });
-  };
-
   return (
     <div
       className={clsx(
@@ -59,15 +49,16 @@ export default function TodoList({ list, className }: Props) {
     >
       <button
         className="absolute top-4 right-4 font-black *:size-5 text-red-500"
-        onClick={onDelete}
+        onClick={() => mutationDelete.mutate({ id: list.id })}
       >
         <TrashIcon />
       </button>
 
       <input
-        className="clear-input text-stone-400 p-4 rounded-t-lg text-4xl font-bold group-hover:text-stone-50"
+        className="clear-input text-stone-400 mt-4 p-4 rounded-t-lg text-4xl font-bold group-hover:text-stone-50"
         value={title}
-        onChange={(e) => onTitleChange(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
+        onBlur={() => mutationUpdate.mutate({ id: list.id, newTitle: title })}
       />
 
       <div className="flex flex-col items-stretch gap-4 p-4">
