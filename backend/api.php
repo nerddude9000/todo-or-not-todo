@@ -97,8 +97,15 @@ function handleLists(string $method, PDO $pdo, ?array $input)
 function handleTasks(string $method, PDO $pdo, ?array $input)
 {
 	switch ($method) {
-		case 'GET': // get all tasks
-			$stmt = $pdo->query("SELECT * FROM tasks ORDER BY id DESC");
+		case 'GET': // get all tasks in list
+			if (!isset($_GET['list_id'])) {
+				http_response_code(400);
+				echo json_encode(["error" => "list_id is required in url parameter"]);
+				exit();
+			}
+
+			$stmt = $pdo->prepare("SELECT * FROM tasks WHERE list_id = :list_id ORDER BY id DESC");
+			$stmt->execute(['list_id' => $_GET['list_id']]);
 			$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			// SQLite uses int for done, so we cast it here to bool
