@@ -1,36 +1,24 @@
-import { useState } from "react";
-import type { TodoListType } from "./lib";
 import TodoList from "./components/TodoList";
-import { PopupKind, useAppState } from "./lib/stores";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
+import { getTodoLists, postTodoList } from "./lib/api";
+
+const queryClient = new QueryClient();
 
 export default function App() {
-  const [todoLists, setTodoLists] = useState<TodoListType[]>([
-    // Dummy data
-    {
-      title: "Test",
-      items: [
-        {
-          name: "Web Project",
-          done: false,
-          date_added: "2026-05-01",
-          date_due: "2026-05-08",
-        },
-        {
-          name: "Something else",
-          done: true,
-          date_added: "1850-10-01",
-          date_due: "1922-01-15",
-        },
-      ],
-    },
-  ]);
+  const query = useQuery({ queryKey: ["lists"], queryFn: getTodoLists });
 
-  // @TODO: add api integration
-
-  const onAddList = () => {};
+  const mutation = useMutation({
+    mutationFn: postTodoList,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["lists"] }),
+  });
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <header className="w-screen h-16 flex items-center justify-center bg-transparent text-stone-100">
         <a
           href="https://github.com/nerddude9000/todo-or-not-todo"
@@ -41,16 +29,16 @@ export default function App() {
         </a>
       </header>
       <main className="p-8 flex-1 flex items-stretch gap-16">
-        {todoLists.map((list) => (
-          <TodoList key={`todo_${list.title}`} list={list} />
+        {query.data?.map((list) => (
+          <TodoList key={`todo_${list.id}`} list={list} />
         ))}
         <button
           className="bg-orange-800 text-stone-200 w-sm min-h-24 text-xl font-semibold self-start rounded-2xl"
-          onClick={onAddList}
+          onClick={() => mutation.mutate()}
         >
           Create a new list
         </button>
       </main>
-    </>
+    </QueryClientProvider>
   );
 }

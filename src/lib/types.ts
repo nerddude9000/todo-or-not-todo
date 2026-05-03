@@ -1,11 +1,11 @@
 export type TodoItemType = {
+  id: number;
   name: string;
-  date_added: string;
-  date_due: string;
   done: boolean;
+  list_id: number;
 };
 
 export type TodoListType = {
+  id: number;
   title: string;
-  items: TodoItemType[];
 };
