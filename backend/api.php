@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -44,9 +46,15 @@ function handleLists(string $method, PDO $pdo, ?array $input)
 			break;
 		case 'POST':
 			// Add new list
-			$stmt = $pdo->prepare("INSERT INTO lists (name) VALUES (?)");
-			$stmt->execute([$input['name']]);
-			echo json_encode(["id" => $pdo->lastInsertId(), "name" => $input['name']]);
+			if (!isset($input['title']) || trim($input['title']) === '') {
+				http_response_code(400);
+				echo json_encode(["error" => "Task title is required"]);
+				exit();
+			}
+
+			$stmt = $pdo->prepare("INSERT INTO lists (title) VALUES (?)");
+			$stmt->execute([$input['title']]);
+			echo json_encode(["id" => $pdo->lastInsertId(), "title" => $input['title']]);
 			break;
 		case 'DELETE':
 			// delete list
@@ -58,7 +66,7 @@ function handleLists(string $method, PDO $pdo, ?array $input)
 			// update list
 			if (!isset($input['id'])) {
 				http_response_code(400);
-				echo json_encode(["error" => "List ID is required"]);
+				echo json_encode(["error" => "list_id is required"]);
 				exit();
 			}
 
@@ -108,13 +116,20 @@ function handleTasks(string $method, PDO $pdo, ?array $input)
 				exit();
 			}
 
-			$stmt = $pdo->prepare("INSERT INTO tasks (name, done) VALUES (:name, 0)");
-			$stmt->execute(['name' => trim($input['name'])]);
+			if (!isset($input['list_id'])) {
+				http_response_code(400);
+				echo json_encode(["error" => "list_id is required"]);
+				exit();
+			}
+
+			$stmt = $pdo->prepare("INSERT INTO tasks (name, done, list_id) VALUES (:name, 0, :list_id)");
+			$stmt->execute(['name' => trim($input['name']), 'list_id' => $input['list_id']]);
 
 			// Return the newly created task
 			$newTask = [
 				'id' => (int)$pdo->lastInsertId(),
 				'name' => trim($input['name']),
+				'list_id' => (int)($input['list_id']),
 				'done' => false
 			];
 
