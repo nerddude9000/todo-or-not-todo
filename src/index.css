@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 body {
-	@apply h-screen w-screen flex flex-col items-stretch bg-stone-950;
+	@apply h-screen w-screen flex flex-col items-stretch bg-stone-950 overflow-auto;
 }
 
 button {
-	@apply hover:cursor-pointer hover:opacity-90;
+	@apply hover:cursor-pointer hover:opacity-90 transition-opacity duration-300;
 }
 
 .clear-input {

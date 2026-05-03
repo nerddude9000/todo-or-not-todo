@@ -46,14 +46,8 @@ function handleLists(string $method, PDO $pdo, ?array $input)
 			break;
 		case 'POST':
 			// Add new list
-			if (!isset($input['title']) || trim($input['title']) === '') {
-				http_response_code(400);
-				echo json_encode(["error" => "Task title is required"]);
-				exit();
-			}
-
 			$stmt = $pdo->prepare("INSERT INTO lists (title) VALUES (?)");
-			$stmt->execute([$input['title']]);
+			$stmt->execute([$input['title'] ?? "My new project"]);
 			echo json_encode(["id" => $pdo->lastInsertId(), "title" => $input['title']]);
 			break;
 		case 'DELETE':
@@ -124,12 +118,13 @@ function handleTasks(string $method, PDO $pdo, ?array $input)
 			}
 
 			$stmt = $pdo->prepare("INSERT INTO tasks (name, done, list_id) VALUES (:name, 0, :list_id)");
-			$stmt->execute(['name' => $input['name'] ? trim($input['name']) : "New Task", 'list_id' => $input['list_id']]);
+			$name = $input['name'] ? trim($input['name']) : "New Task";
+			$stmt->execute(['name' => $name, 'list_id' => $input['list_id']]);
 
 			// Return the newly created task
 			$newTask = [
 				'id' => (int)$pdo->lastInsertId(),
-				'name' => trim($input['name']),
+				'name' => $name,
 				'list_id' => (int)($input['list_id']),
 				'done' => false
 			];

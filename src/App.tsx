@@ -1,15 +1,14 @@
 import TodoList from "./components/TodoList";
 import {
-  QueryClient,
   QueryClientProvider,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import { getTodoLists, postTodoList } from "./lib/api";
 
-const queryClient = new QueryClient();
-
 export default function App() {
+  const queryClient = useQueryClient();
   const query = useQuery({ queryKey: ["lists"], queryFn: getTodoLists });
 
   const mutation = useMutation({
@@ -28,7 +27,7 @@ export default function App() {
           To do, or not to do...
         </a>
       </header>
-      <main className="p-8 flex-1 flex items-stretch gap-16">
+      <main className="p-8 flex-1 flex items-stretch gap-16 max-w-none">
         {query.data?.map((list) => (
           <TodoList key={`todo_${list.id}`} list={list} />
         ))}
