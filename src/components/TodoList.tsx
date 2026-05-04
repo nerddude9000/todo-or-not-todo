@@ -48,7 +48,7 @@ export default function TodoList({ list, className }: Props) {
       )}
     >
       <button
-        className="absolute top-4 right-4 font-black *:size-5 text-red-500"
+        className="absolute top-3 right-3 font-black *:size-4 text-red-500"
         onClick={() => mutationDelete.mutate({ id: list.id })}
       >
         <TrashIcon />

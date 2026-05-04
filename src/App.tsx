@@ -17,7 +17,7 @@ export default function App() {
   });
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <header className="w-screen h-16 flex items-center justify-center bg-transparent text-stone-100">
         <a
           href="https://github.com/nerddude9000/todo-or-not-todo"
@@ -27,7 +27,7 @@ export default function App() {
           To do, or not to do...
         </a>
       </header>
-      <main className="p-8 flex-1 flex *:min-w-96 items-start gap-16 max-w-none min-h-svh overflow-x-scroll">
+      <main className="p-8 flex-1 flex *:min-w-96 items-start gap-16 w-screen max-w-none min-h-svh overflow-x-scroll">
         {query.data?.map((list) => (
           <TodoList key={`todo_${list.id}`} list={list} />
         ))}
@@ -49,6 +49,6 @@ export default function App() {
         </a>
         .
       </footer>
-    </QueryClientProvider>
+    </>
   );
 }
